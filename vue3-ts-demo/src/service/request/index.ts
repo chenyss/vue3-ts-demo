@@ -61,11 +61,11 @@ class AxiosRequest {
   }
 
   get<T = any>(config: DIYRequestConfig<T>) {
-    this.request({ ...config, method: 'get' })
+    return this.request({ ...config, method: 'get' })
   }
 
   post<T = any>(config: DIYRequestConfig<T>) {
-    this.request({ ...config, method: 'post' })
+    return this.request({ ...config, method: 'post' })
   }
 }
 

@@ -1,17 +1,17 @@
 <template>
   <div class="login-panel">
     <h1 class="title">后台管理系统</h1>
-    <el-tabs type="border-card" stretch>
-      <el-tab-pane label="账号登录">
+    <el-tabs v-model="activeName" type="border-card" stretch>
+      <el-tab-pane label="账号登录" name="account">
         <template #label>
           <div class="tab-title">
             <el-icon><User /></el-icon>
             <div class="text">账号登录</div>
           </div>
         </template>
-        <PanelAcctount />
+        <PanelAcctount ref="accountRef" />
       </el-tab-pane>
-      <el-tab-pane label="手机登录">
+      <el-tab-pane label="手机登录" name="phone">
         <template #label>
           <div class="tab-title">
             <el-icon><Iphone /></el-icon>
@@ -33,10 +33,13 @@
 import { ref } from 'vue'
 import PanelAcctount from './panel-account.vue'
 import PanelPhone from './panel-phone.vue'
-
+const activeName = ref('account')
 const isRemPassword = ref(false)
+const accountRef = ref<InstanceType<typeof PanelAcctount>>()
 function handleLoginBtnClick() {
-  console.log('登录')
+  if (activeName.value === 'account') {
+    accountRef.value?.loginAction()
+  }
 }
 </script>
 

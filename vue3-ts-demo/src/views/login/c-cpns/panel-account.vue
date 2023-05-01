@@ -1,22 +1,63 @@
 <template>
   <div class="panel-acctount">
-    <el-form :model="form" label-width="60px" size="large" status-icon>
-      <el-form-item label="用户名">
-        <el-input v-model="form.name" />
+    <el-form :model="account" label-width="70px" size="large" status-icon :rules="accountRules" ref="formRef">
+      <el-form-item label="账号" prop="name">
+        <el-input v-model="account.name" />
       </el-form-item>
-      <el-form-item label="密码">
-        <el-input v-model="form.password" type="password" show-password />
+      <el-form-item label="密码" prop="password">
+        <el-input v-model="account.password" type="password" show-password />
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
+import useLogin from '@/store/login'
+import type { ElForm, FormRules } from 'element-plus'
+import { ElMessage } from 'element-plus'
+import { reactive, ref } from 'vue'
 
-const form = reactive({
+const account = reactive({
   name: '',
   password: ''
+})
+
+const accountRules: FormRules = {
+  name: [
+    { required: true, message: '必须输入帐号信息~', trigger: 'blur' },
+    {
+      pattern: /^[a-z0-9]{6,20}$/,
+      message: '必须是6~20数字或字母组成~',
+      trigger: 'blur'
+    }
+  ],
+  password: [
+    { required: true, message: '必须输入密码信息~', trigger: 'blur' },
+    {
+      pattern: /^[a-z0-9]{3,}$/,
+      message: '必须是3位以上数字或字母组成',
+      trigger: 'blur'
+    }
+  ]
+}
+
+const formRef = ref<InstanceType<typeof ElForm>>()
+const loginStore = useLogin()
+function loginAction() {
+  formRef.value?.validate((valid) => {
+    if (valid) {
+      // 1.获取用户输入的帐号和密码
+      const name = account.name
+      const password = account.password
+      loginStore.loginAccountAction({ name, password })
+    } else {
+      ElMessage.error('Oops, 请您输入正确的格式后再操作~~.')
+    }
+  })
+}
+
+defineExpose({
+  loginAction
 })
 </script>
 
