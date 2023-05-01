@@ -1,16 +1,21 @@
 <template>
-  <div class="home">{{ loginStore.id }}</div>
+  <div class="login">
+    <LoginPanel />
+  </div>
 </template>
 
 <script setup lang="ts">
-import { getTestData } from '@/service/module/home'
-import useLogin from '@/store/login'
-import { onMounted } from 'vue'
-const loginStore = useLogin()
-onMounted(async () => {
-  const res = await getTestData()
-  console.log(res)
-})
+import LoginPanel from './c-cpns/login-panel.vue'
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../../assets/img/login-bg.svg');
+
+  width: 100%;
+  height: 100%;
+}
+</style>

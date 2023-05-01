@@ -1,11 +1,14 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div>
-    <RouterLink to="./login">登录页</RouterLink>
-    <RouterLink to="./main">首页</RouterLink>
+  <div class="app">
     <RouterView></RouterView>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="less">
+.app {
+  width: 100vw;
+  height: 100vh;
+}
+</style>
