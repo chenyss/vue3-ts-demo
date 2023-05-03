@@ -18,7 +18,6 @@ import { localCache } from '@/utils/cache'
 import type { ElForm, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
 
 const account = reactive({
   name: localCache.getCache('name') ?? '',
@@ -46,7 +45,6 @@ const accountRules: FormRules = {
 
 const formRef = ref<InstanceType<typeof ElForm>>()
 
-const route = useRouter()
 const loginStore = useLogin()
 function loginAction(isRemPassword: boolean) {
   formRef.value?.validate((valid) => {
@@ -55,7 +53,6 @@ function loginAction(isRemPassword: boolean) {
       const name = account.name
       const password = account.password
       loginStore.loginAccountAction({ name, password }).then(() => {
-        route.push('/main')
         if (isRemPassword) {
           localCache.setCache(LOGIN_NAME, account.name)
           localCache.setCache(LOGIN_PASSWORD, account.password)

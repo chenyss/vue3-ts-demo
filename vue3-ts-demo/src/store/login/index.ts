@@ -1,4 +1,5 @@
-import { LOGIN_TOKEN } from '@/global/constant'
+import { LOGIN_TOKEN, USERINFO, USERMENU } from '@/global/constant'
+import router from '@/router'
 import { accountLoginRequest, getUserInfoById, getUserMenusByRoleId } from '@/service/module/login'
 import type { IAccount } from '@/types'
 import { localCache } from '@/utils/cache'
@@ -16,8 +17,8 @@ const useLogin = defineStore('login', {
     id: '',
     token: localCache.getCache(LOGIN_TOKEN) ?? '',
     name: '',
-    userInfo: {},
-    userMenuInfo: {}
+    userInfo: localCache.getCache(USERINFO) ?? {},
+    userMenuInfo: localCache.getCache(USERMENU) ?? []
   }),
   getters: {},
   actions: {
@@ -33,11 +34,16 @@ const useLogin = defineStore('login', {
 
       //3.获取用户信息
       const userInfo = await getUserInfoById(this.id)
-      this.userInfo = userInfo
+      this.userInfo = userInfo.data
 
       //4.获取用户菜单权限信息
       const userMenuInfo = await getUserMenusByRoleId(this.id)
-      this.userMenuInfo = userMenuInfo
+      this.userMenuInfo = userMenuInfo.data
+
+      localCache.setCache(USERINFO, userMenuInfo.data)
+      localCache.setCache(USERMENU, userMenuInfo.data)
+
+      router.push('/main')
     }
   }
 })
