@@ -1,3 +1,5 @@
+import { LOGIN_TOKEN } from '@/global/constant'
+import { localCache } from '@/utils/cache'
 import type { AxiosInstance } from 'axios'
 import axios from 'axios'
 import type { DIYRequestConfig } from './type'
@@ -10,6 +12,10 @@ class AxiosRequest {
     //添加全局拦截器
     this.instance.interceptors.request.use(
       (config) => {
+        const token = localCache.getCache(LOGIN_TOKEN)
+        if (config.headers && token) {
+          config.headers.Authorization = token
+        }
         return config
       },
       (err) => {

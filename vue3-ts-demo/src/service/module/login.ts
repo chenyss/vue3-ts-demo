@@ -7,3 +7,15 @@ export function accountLoginRequest(account: IAccount) {
     data: account
   })
 }
+
+export function getUserInfoById(id: string) {
+  return axiosRequest.get({
+    url: `/users/${id}`
+  })
+}
+
+export function getUserMenusByRoleId(id: string) {
+  return axiosRequest.get({
+    url: `/role/${id}/menu`
+  })
+}

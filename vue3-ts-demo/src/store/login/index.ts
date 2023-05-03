@@ -1,14 +1,23 @@
 import { LOGIN_TOKEN } from '@/global/constant'
-import { accountLoginRequest } from '@/service/module/login'
+import { accountLoginRequest, getUserInfoById, getUserMenusByRoleId } from '@/service/module/login'
 import type { IAccount } from '@/types'
 import { localCache } from '@/utils/cache'
 import { defineStore } from 'pinia'
 
+interface loginStore {
+  id: string
+  name: string
+  token: string
+  userInfo: any
+  userMenuInfo: any
+}
 const useLogin = defineStore('login', {
-  state: () => ({
+  state: (): loginStore => ({
     id: '',
-    name: localCache.getCache(LOGIN_TOKEN) ?? '',
-    token: ''
+    token: localCache.getCache(LOGIN_TOKEN) ?? '',
+    name: '',
+    userInfo: {},
+    userMenuInfo: {}
   }),
   getters: {},
   actions: {
@@ -21,6 +30,14 @@ const useLogin = defineStore('login', {
 
       // 2.进行本地缓存
       localCache.setCache(LOGIN_TOKEN, this.token)
+
+      //3.获取用户信息
+      const userInfo = await getUserInfoById(this.id)
+      this.userInfo = userInfo
+
+      //4.获取用户菜单权限信息
+      const userMenuInfo = await getUserMenusByRoleId(this.id)
+      this.userMenuInfo = userMenuInfo
     }
   }
 })
