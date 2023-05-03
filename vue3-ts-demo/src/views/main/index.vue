@@ -2,11 +2,13 @@
   <div class="main">
     <el-button type="primary" @click="handleExitBtnClick" class="login-btn">退出登录</el-button>
     <el-container class="main-content">
-      <el-aside width="210px">
-        <MainMenu />
+      <el-aside :width="isFold ? '60px' : '210px'">
+        <MainMenu :isFold="isFold" />
       </el-aside>
       <el-container>
-        <el-header height="50px"> </el-header>
+        <el-header height="50px">
+          <MainHeader :isFold="isFold" @foldChange="onFoldChange" />
+        </el-header>
         <el-main>
           <router-view></router-view>
         </el-main>
@@ -17,12 +19,19 @@
 
 <script setup lang="ts">
 import { localCache } from '@/utils/cache'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import MainMenu from './c-cpns/main-menu.vue'
+import MainHeader from './c-cpns/main-header/index.vue'
+import MainMenu from './c-cpns/main-menu/index.vue'
 const route = useRouter()
+let isFold = ref(false)
 function handleExitBtnClick() {
   route.push('/login')
   localCache.removeCache('LOGIN_TOKEN')
+}
+function onFoldChange() {
+  isFold.value = !isFold.value
+  console.log(1)
 }
 </script>
 

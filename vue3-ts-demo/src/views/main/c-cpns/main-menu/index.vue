@@ -1,10 +1,17 @@
 <template>
   <div class="main-menu">
     <div class="logo">
-      <h2 class="title">后台管理系统</h2>
+      <img class="img" src="@/assets/img/logo.svg" alt="" />
+      <h2 v-show="!isFold" class="title">后台管理系统</h2>
     </div>
     <div class="menu">
-      <el-menu default-active="39" text-color="#b7bdc3" active-text-color="#fff" background-color="#001529">
+      <el-menu
+        default-active="39"
+        text-color="#b7bdc3"
+        active-text-color="#fff"
+        background-color="#001529"
+        :collapse="isFold"
+      >
         <template v-for="item in userMenuInfo" :key="item.id">
           <el-sub-menu :index="item.id + ''">
             <template #title>
@@ -28,6 +35,12 @@
 
 <script setup lang="ts">
 import useLoginStore from '@/store/login/index'
+defineProps({
+  isFold: {
+    type: Boolean,
+    default: false
+  }
+})
 const loginStore = useLoginStore()
 const userMenuInfo = loginStore.userMenuInfo
 </script>
