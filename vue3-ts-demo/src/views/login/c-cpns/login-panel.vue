@@ -30,15 +30,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { LOGIN_ISREM, LOGIN_NAME, LOGIN_PASSWORD } from '@/global/constant'
+import { localCache } from '@/utils/cache'
+import { ref, watch } from 'vue'
 import PanelAcctount from './panel-account.vue'
 import PanelPhone from './panel-phone.vue'
 const activeName = ref('account')
-const isRemPassword = ref(false)
+const isRemPassword = ref<boolean>(localCache.getCache(LOGIN_ISREM) ?? false)
 const accountRef = ref<InstanceType<typeof PanelAcctount>>()
+watch(isRemPassword, (newValue) => {
+  localCache.setCache(LOGIN_ISREM, newValue)
+  if (!newValue) {
+    localCache.removeCache(LOGIN_NAME)
+    localCache.removeCache(LOGIN_PASSWORD)
+  }
+})
 function handleLoginBtnClick() {
   if (activeName.value === 'account') {
-    accountRef.value?.loginAction()
+    accountRef.value?.loginAction(isRemPassword.value)
   }
 }
 </script>

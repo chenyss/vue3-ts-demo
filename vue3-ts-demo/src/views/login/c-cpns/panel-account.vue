@@ -12,14 +12,17 @@
 </template>
 
 <script setup lang="ts">
+import { LOGIN_NAME, LOGIN_PASSWORD } from '@/global/constant'
 import useLogin from '@/store/login'
+import { localCache } from '@/utils/cache'
 import type { ElForm, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const account = reactive({
-  name: '',
-  password: ''
+  name: localCache.getCache('name') ?? '',
+  password: localCache.getCache('password') ?? ''
 })
 
 const accountRules: FormRules = {
@@ -42,16 +45,24 @@ const accountRules: FormRules = {
 }
 
 const formRef = ref<InstanceType<typeof ElForm>>()
+
+const route = useRouter()
 const loginStore = useLogin()
-function loginAction() {
+function loginAction(isRemPassword: boolean) {
   formRef.value?.validate((valid) => {
     if (valid) {
       // 1.获取用户输入的帐号和密码
       const name = account.name
       const password = account.password
-      loginStore.loginAccountAction({ name, password })
+      loginStore.loginAccountAction({ name, password }).then(() => {
+        route.push('/main')
+        if (isRemPassword) {
+          localCache.setCache(LOGIN_NAME, account.name)
+          localCache.setCache(LOGIN_PASSWORD, account.password)
+        }
+      })
     } else {
-      ElMessage.error('Oops, 请您输入正确的格式后再操作~~.')
+      ElMessage.error('请您输入正确的格式后再操作')
     }
   })
 }
