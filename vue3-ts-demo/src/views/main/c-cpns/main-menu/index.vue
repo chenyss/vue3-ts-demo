@@ -22,7 +22,7 @@
             </template>
 
             <template v-for="subitem in item.children" :key="subitem.id">
-              <el-menu-item :index="subitem.id + ''">
+              <el-menu-item :index="subitem.id + ''" @click="hadleLinkClick(subitem)">
                 {{ subitem.name }}
               </el-menu-item>
             </template>
@@ -35,6 +35,7 @@
 
 <script setup lang="ts">
 import useLoginStore from '@/store/login/index'
+import { useRouter } from 'vue-router'
 defineProps({
   isFold: {
     type: Boolean,
@@ -42,7 +43,12 @@ defineProps({
   }
 })
 const loginStore = useLoginStore()
+const router = useRouter()
 const userMenuInfo = loginStore.userMenuInfo
+
+function hadleLinkClick(item: any) {
+  router.push(item.url)
+}
 </script>
 
 <style lang="less" scoped>
