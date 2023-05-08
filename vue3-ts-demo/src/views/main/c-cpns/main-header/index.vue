@@ -6,13 +6,14 @@
       </el-icon>
     </div>
     <div class="content">
-      <div class="breadcrumb">面包屑</div>
+      <headerCrumb />
       <headerInfo />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import headerCrumb from './c-cpns/header-crumb.vue'
 import headerInfo from './c-cpns/header-info.vue'
 defineProps({
   isFold: {
