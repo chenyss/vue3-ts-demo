@@ -6,7 +6,7 @@
     </div>
     <div class="menu">
       <el-menu
-        default-active="39"
+        :default-active="id"
         text-color="#b7bdc3"
         active-text-color="#fff"
         background-color="#001529"
@@ -35,7 +35,9 @@
 
 <script setup lang="ts">
 import useLoginStore from '@/store/login/index'
-import { useRouter } from 'vue-router'
+import { mapPathToMenu } from '@/utils/map-meus'
+import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 defineProps({
   isFold: {
     type: Boolean,
@@ -44,8 +46,11 @@ defineProps({
 })
 const loginStore = useLoginStore()
 const router = useRouter()
+const route = useRoute()
 const userMenuInfo = loginStore.userMenuInfo
-
+const id = computed(() => {
+  return mapPathToMenu(route.path, userMenuInfo).id + ''
+})
 function hadleLinkClick(item: any) {
   router.push(item.url)
 }
