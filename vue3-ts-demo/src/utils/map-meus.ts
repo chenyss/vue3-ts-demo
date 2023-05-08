@@ -13,6 +13,7 @@ function loadLocalRoutes() {
   return routeArr
 }
 
+let mainRedirectPath: string = ''
 function mapMenusToRoutes(userMenus: any[]) {
   // 1.加载本地路由
   const localRoutes = loadLocalRoutes()
@@ -21,11 +22,18 @@ function mapMenusToRoutes(userMenus: any[]) {
     for (const submenu of menu.children) {
       const route = localRoutes.find((item) => item.path === submenu.url)
       if (route) {
+        //第一次匹配到的一级目录，手动添加一层重定向的路由
+        if (!routes.find((item) => item.path === menu.url)) {
+          routes.push({ path: menu.url, redirect: route.path })
+        }
         routes.push(route)
       }
+      // 记录第一个被匹配到的菜单
+      if (!mainRedirectPath && route) mainRedirectPath = submenu.url
     }
   }
+
   return routes
 }
 
-export { loadLocalRoutes, mapMenusToRoutes }
+export { loadLocalRoutes, mapMenusToRoutes, mainRedirectPath }

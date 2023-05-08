@@ -1,5 +1,6 @@
 import { LOGIN_TOKEN } from '@/global/constant'
 import { localCache } from '@/utils/cache'
+import { mainRedirectPath } from '@/utils/map-meus'
 import { createRouter, createWebHashHistory } from 'vue-router'
 const routes = [
   {
@@ -32,6 +33,10 @@ router.beforeEach((to) => {
   const token = localCache.getCache(LOGIN_TOKEN)
   if (!token && to.path === '/main') {
     return '/login'
+  }
+
+  if (to.path === '/main' && mainRedirectPath.length > 0) {
+    return mainRedirectPath
   }
 })
 

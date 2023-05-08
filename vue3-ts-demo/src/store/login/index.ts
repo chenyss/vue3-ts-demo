@@ -44,9 +44,6 @@ const useLogin = defineStore('login', {
       localCache.setCache(USERINFO, userMenuInfo.data)
       localCache.setCache(USERMENU, userMenuInfo.data)
 
-      const routes = mapMenusToRoutes(userMenuInfo)
-      routes.forEach((route) => router.addRoute('main', route))
-
       router.push('/main')
     },
 
@@ -59,9 +56,9 @@ const useLogin = defineStore('login', {
         this.token = token
         this.userInfo = userInfo
         this.userMenuInfo = userMenuInfo
-
         // 2.动态添加路由
         const routes = mapMenusToRoutes(userMenuInfo)
+
         routes.forEach((route) => router.addRoute('main', route))
       }
     }
