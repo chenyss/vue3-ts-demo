@@ -3,6 +3,7 @@ import router from '@/router'
 import { accountLoginRequest, getUserInfoById, getUserMenusByRoleId } from '@/service/module/login'
 import type { IAccount } from '@/types'
 import { localCache } from '@/utils/cache'
+import { mapMenusToRoutes } from '@/utils/map-meus'
 import { defineStore } from 'pinia'
 
 interface loginStore {
@@ -42,6 +43,11 @@ const useLogin = defineStore('login', {
 
       localCache.setCache(USERINFO, userMenuInfo.data)
       localCache.setCache(USERMENU, userMenuInfo.data)
+
+      //动态加载路由
+      const routes = mapMenusToRoutes(userMenuInfo.data)
+      routes.forEach((route) => router.addRoute('main', route))
+      console.log(routes)
 
       router.push('/main')
     }
