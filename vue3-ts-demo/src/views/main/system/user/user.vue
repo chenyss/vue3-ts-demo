@@ -1,8 +1,12 @@
 <template>
-  <div class="user"></div>
+  <div class="user">
+    <userSearch />
+  </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import userSearch from './c-cpns/user-search.vue'
+</script>
 
 <style lang="less" scoped>
 .user {
