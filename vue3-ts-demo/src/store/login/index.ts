@@ -16,10 +16,10 @@ interface loginStore {
 const useLogin = defineStore('login', {
   state: (): loginStore => ({
     id: '',
-    token: localCache.getCache(LOGIN_TOKEN) ?? '',
+    token: '',
     name: '',
-    userInfo: localCache.getCache(USERINFO) ?? {},
-    userMenuInfo: localCache.getCache(USERMENU) ?? []
+    userInfo: {},
+    userMenuInfo: []
   }),
   getters: {},
   actions: {
@@ -44,12 +44,26 @@ const useLogin = defineStore('login', {
       localCache.setCache(USERINFO, userMenuInfo.data)
       localCache.setCache(USERMENU, userMenuInfo.data)
 
-      //动态加载路由
-      const routes = mapMenusToRoutes(userMenuInfo.data)
+      const routes = mapMenusToRoutes(userMenuInfo)
       routes.forEach((route) => router.addRoute('main', route))
-      console.log(routes)
 
       router.push('/main')
+    },
+
+    loadLocalCacheAction() {
+      // 1.加载默认数据
+      const token = localCache.getCache(LOGIN_TOKEN)
+      const userInfo = localCache.getCache(USERINFO)
+      const userMenuInfo = localCache.getCache(USERMENU)
+      if (token && userInfo && userMenuInfo) {
+        this.token = token
+        this.userInfo = userInfo
+        this.userMenuInfo = userMenuInfo
+
+        // 2.动态添加路由
+        const routes = mapMenusToRoutes(userMenuInfo)
+        routes.forEach((route) => router.addRoute('main', route))
+      }
     }
   }
 })
