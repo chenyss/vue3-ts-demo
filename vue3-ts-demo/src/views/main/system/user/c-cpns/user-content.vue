@@ -50,26 +50,26 @@ import { ref } from 'vue'
 const pageIndex = ref(1)
 const pageSize = ref(10)
 const systemStore = useSystemStore()
-fetchTabelData()
+fetchUserListData()
 const { usersList, usersTotalCount } = storeToRefs(systemStore)
-function fetchTabelData() {
+function fetchUserListData(formData: any = {}) {
   const size = pageSize.value
   const offset = (pageIndex.value - 1) * size
   const pageInfo = { size, offset }
 
-  const queryInfo = { ...pageInfo }
+  const queryInfo = { ...pageInfo, ...formData }
   systemStore.postUsersListAction(queryInfo)
 }
 
-console.log(usersList)
-
 function handleSizeChange() {
-  fetchTabelData()
+  fetchUserListData()
 }
 
 function handleCurrentChange() {
-  fetchTabelData()
+  fetchUserListData()
 }
+
+defineExpose({ fetchUserListData })
 </script>
 
 <style lang="less" scoped>

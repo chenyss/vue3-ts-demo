@@ -49,6 +49,7 @@
 import type { ElForm } from 'element-plus'
 import { reactive, ref } from 'vue'
 
+const emit = defineEmits(['queryClick', 'resetClick'])
 const searchForm = reactive({
   name: '',
   realname: '',
@@ -60,10 +61,11 @@ const searchForm = reactive({
 const formRef = ref<InstanceType<typeof ElForm>>()
 function handleResetClick() {
   formRef.value?.resetFields()
+  emit('resetClick')
 }
 
 function handleQueryClick() {
-  console.log('handleQueryClick')
+  emit('queryClick', searchForm)
 }
 </script>
 
