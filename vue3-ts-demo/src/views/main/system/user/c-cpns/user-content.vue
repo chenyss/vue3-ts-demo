@@ -12,7 +12,11 @@
         <el-table-column align="center" label="用户名" prop="name" width="150px" />
         <el-table-column align="center" label="真实姓名" prop="realname" width="150px" />
         <el-table-column align="center" label="手机号码" prop="cellphone" width="150px" />
-        <el-table-column align="center" label="状态" prop="enable" width="100px" />
+        <el-table-column align="center" label="状态" prop="enable" width="100px">
+          <template #default="scope">
+            <span>{{ scope.row.enable ? '启用' : '禁用' }}</span>
+          </template>
+        </el-table-column>
         <el-table-column align="center" label="创建时间" prop="createAt" />
         <el-table-column align="center" label="更新时间" prop="updateAt" />
 
@@ -22,20 +26,50 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="pagination">分页</div>
+    <div class="pagination">
+      <el-pagination
+        v-model:current-page="pageIndex"
+        v-model:page-size="pageSize"
+        :page-sizes="[10, 20, 30, 40]"
+        small
+        background
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="usersTotalCount"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import useSystemStore from '@/store/main/system'
 import { storeToRefs } from 'pinia'
+import { ref } from 'vue'
 
-// 1.发起action，请求usersList的数据
+const pageIndex = ref(1)
+const pageSize = ref(10)
 const systemStore = useSystemStore()
-systemStore.postUsersListAction()
+fetchTabelData()
+const { usersList, usersTotalCount } = storeToRefs(systemStore)
+function fetchTabelData() {
+  const size = pageSize.value
+  const offset = (pageIndex.value - 1) * size
+  const pageInfo = { size, offset }
 
-// 2.获取usersList数据,进行展示
-const { usersList } = storeToRefs(systemStore)
+  const queryInfo = { ...pageInfo }
+  systemStore.postUsersListAction(queryInfo)
+}
+
+console.log(usersList)
+
+function handleSizeChange() {
+  fetchTabelData()
+}
+
+function handleCurrentChange() {
+  fetchTabelData()
+}
 </script>
 
 <style lang="less" scoped>
@@ -65,5 +99,11 @@ const { usersList } = storeToRefs(systemStore)
     margin-left: 0;
     padding: 5px 8px;
   }
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
 }
 </style>

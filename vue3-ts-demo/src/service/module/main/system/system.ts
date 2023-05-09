@@ -1,12 +1,9 @@
 import axiosRequest from '@/service/index'
 
 /** 用户的网络请求 */
-export function postUsersListData() {
+export function postUsersListData(queryData: any) {
   return axiosRequest.post({
     url: '/users/list',
-    data: {
-      offset: 0,
-      size: 10
-    }
+    data: queryData
   })
 }
