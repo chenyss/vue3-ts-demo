@@ -17,9 +17,16 @@
             <span>{{ scope.row.enable ? '启用' : '禁用' }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="创建时间" prop="createAt" />
-        <el-table-column align="center" label="更新时间" prop="updateAt" />
-
+        <el-table-column align="center" label="创建时间" prop="createAt">
+          <template #default="scope">
+            <span>{{ formatUTC(scope.row.createAt) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="更新时间" prop="updateAt">
+          <template #default="scope">
+            <span>{{ formatUTC(scope.row.updateAt) }}</span>
+          </template>
+        </el-table-column>
         <el-table-column align="center" label="操作" width="150px">
           <el-button size="small" icon="Edit" type="primary" text> 编辑 </el-button>
           <el-button size="small" icon="Delete" type="danger" text> 删除 </el-button>
@@ -44,6 +51,7 @@
 
 <script setup lang="ts">
 import useSystemStore from '@/store/main/system'
+import { formatUTC } from '@/utils/format'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 
