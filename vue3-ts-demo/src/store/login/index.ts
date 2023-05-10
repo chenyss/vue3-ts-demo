@@ -5,6 +5,7 @@ import type { IAccount } from '@/types'
 import { localCache } from '@/utils/cache'
 import { mapMenusToRoutes } from '@/utils/map-meus'
 import { defineStore } from 'pinia'
+import useMainStore from '../main/main'
 
 interface loginStore {
   id: string
@@ -44,6 +45,9 @@ const useLogin = defineStore('login', {
       localCache.setCache(USERINFO, userMenuInfo.data)
       localCache.setCache(USERMENU, userMenuInfo.data)
 
+      const mainStore = useMainStore()
+      mainStore.fetchEntireDataAction()
+
       router.push('/main')
     },
 
@@ -60,6 +64,9 @@ const useLogin = defineStore('login', {
         const routes = mapMenusToRoutes(userMenuInfo)
 
         routes.forEach((route) => router.addRoute('main', route))
+
+        const mainStore = useMainStore()
+        mainStore.fetchEntireDataAction()
       }
     }
   }

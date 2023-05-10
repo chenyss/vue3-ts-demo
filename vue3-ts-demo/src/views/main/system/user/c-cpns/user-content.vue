@@ -2,7 +2,7 @@
   <div class="content">
     <div class="header">
       <h3 class="title">用户列表</h3>
-      <el-button type="primary">新建用户</el-button>
+      <el-button type="primary" @click="handleNewUser">新建用户</el-button>
     </div>
     <div class="table">
       <el-table :data="usersList" border style="width: 100%">
@@ -28,8 +28,14 @@
           </template>
         </el-table-column>
         <el-table-column align="center" label="操作" width="150px">
-          <el-button size="small" icon="Edit" type="primary" text> 编辑 </el-button>
-          <el-button size="small" icon="Delete" type="danger" text> 删除 </el-button>
+          <template #default="scope">
+            <el-button size="small" icon="Edit" type="primary" text @click="handelEditUser(scope.row)">
+              编辑
+            </el-button>
+            <el-button size="small" icon="Delete" type="danger" text @click="handelDeleteUser(scope.row.id)">
+              删除
+            </el-button>
+          </template>
         </el-table-column>
       </el-table>
     </div>
@@ -60,6 +66,9 @@ const pageSize = ref(10)
 const systemStore = useSystemStore()
 fetchUserListData()
 const { usersList, usersTotalCount } = storeToRefs(systemStore)
+
+const emit = defineEmits(['newUser', 'editUser'])
+
 function fetchUserListData(formData: any = {}) {
   const size = pageSize.value
   const offset = (pageIndex.value - 1) * size
@@ -75,6 +84,17 @@ function handleSizeChange() {
 
 function handleCurrentChange() {
   fetchUserListData()
+}
+
+function handelDeleteUser(id: number) {
+  systemStore.deleteUserDataAction(id)
+}
+
+function handleNewUser() {
+  emit('newUser')
+}
+function handelEditUser(itemData: any) {
+  emit('editUser', itemData)
 }
 
 defineExpose({ fetchUserListData })

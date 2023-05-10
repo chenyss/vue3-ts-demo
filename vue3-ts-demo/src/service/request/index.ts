@@ -73,6 +73,12 @@ class AxiosRequest {
   post<T = any>(config: DIYRequestConfig<T>) {
     return this.request({ ...config, method: 'post' })
   }
+  delete<T = any>(config: DIYRequestConfig<T>) {
+    return this.request({ ...config, method: 'DELETE' })
+  }
+  patch<T = any>(config: DIYRequestConfig<T>) {
+    return this.request({ ...config, method: 'PATCH' })
+  }
 }
 
 export default AxiosRequest
