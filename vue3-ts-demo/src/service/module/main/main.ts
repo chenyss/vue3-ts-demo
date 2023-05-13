@@ -12,3 +12,9 @@ export function getEntireDepartments() {
     url: '/department/list'
   })
 }
+
+export function getEntireMenus() {
+  return axiosRequest.post({
+    url: '/menu/list'
+  })
+}
