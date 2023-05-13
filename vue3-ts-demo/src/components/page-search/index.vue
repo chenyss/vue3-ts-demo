@@ -14,14 +14,14 @@
           <template v-else-if="item.type === 'date-picker'">
             <el-col :span="8">
               <el-form-item :label="item.label" :prop="item.prop">
-                <el-time-picker
+                <el-date-picker
                   v-model="searchForm[item.prop]"
-                  is-range
+                  type="daterange"
                   range-separator="-"
                   start-placeholder="开始时间"
                   end-placeholder="结束时间"
                 >
-                </el-time-picker>
+                </el-date-picker>
               </el-form-item>
             </el-col>
           </template>
