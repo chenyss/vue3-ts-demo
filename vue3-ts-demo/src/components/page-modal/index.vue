@@ -58,6 +58,7 @@ const props = defineProps<IProps>()
 const isNew = ref(true)
 const dialogVisible = ref(false)
 const initialForm: any = {}
+
 for (const item of props.modalConfig.formItems) {
   if (item.prop) {
     initialForm[item.prop] = item.initialValue ?? ''

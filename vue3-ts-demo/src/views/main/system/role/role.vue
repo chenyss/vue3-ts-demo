@@ -35,7 +35,7 @@ import { storeToRefs } from 'pinia'
 import { nextTick, ref } from 'vue'
 
 const { handleResetClick, handleQueryClick, contentRef } = usePageContent()
-const { modalRef, handleNewItem, handleEditItem } = usePageModal(editCallback)
+const { modalRef, handleNewItem, handleEditItem } = usePageModal(editCallback, newCallback)
 
 const treeRef = ref()
 const otherInfo = ref({})
@@ -46,7 +46,11 @@ function handleElTreeCheck(data1: any, data2: any) {
   const menuList = [...data2.checkedKeys, ...data2.halfCheckedKeys]
   otherInfo.value = { menuList }
 }
-
+function newCallback() {
+  nextTick(() => {
+    treeRef.value?.setCheckedKeys([])
+  })
+}
 function editCallback(itemData: any) {
   nextTick(() => {
     const menuIds = mapMenuListToIds(itemData.menuList)
