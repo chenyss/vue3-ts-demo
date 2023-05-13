@@ -21,38 +21,26 @@
 import PageContent from '@/components/page-content/index.vue'
 import PageModal from '@/components/page-modal/index.vue'
 import PageSearch from '@/components/page-search/index.vue'
+
+import usePageContent from '@/hooks/usePageContent'
+import usePageModal from '@/hooks/usePageModal'
 import useMainStore from '@/store/main/main'
-import { mapMenuListToIds } from '@/utils/map-meus'
-import { storeToRefs } from 'pinia'
-import { nextTick, ref } from 'vue'
+
 import contentConfig from './config/content.config'
 import modalConfig from './config/modal.config'
 import searchConfig from './config/search.config'
-const contentRef = ref<InstanceType<typeof PageContent>>()
-const modalRef = ref<InstanceType<typeof PageModal>>()
 
-const mainStore = useMainStore()
-const { entireMenus } = storeToRefs(mainStore)
+import { mapMenuListToIds } from '@/utils/map-meus'
+import { storeToRefs } from 'pinia'
+import { nextTick, ref } from 'vue'
+
+const { handleResetClick, handleQueryClick, contentRef } = usePageContent()
+const { modalRef, handleNewItem, handleEditItem } = usePageModal(editCallback)
+
 const treeRef = ref()
 const otherInfo = ref({})
-function handleQueryClick(formData: any) {
-  contentRef.value?.fetchPageListData(formData)
-}
-function handleResetClick() {
-  contentRef.value?.fetchPageListData()
-}
-
-function handleNewItem() {
-  modalRef.value!.isNew = true
-  modalRef.value!.dialogVisible = true
-}
-
-function handleEditItem(itemData: any) {
-  modalRef.value!.isNew = false
-  modalRef.value!.dialogVisible = true
-  modalRef.value?.setFormData(itemData)
-  editCallback(itemData)
-}
+const mainStore = useMainStore()
+const { entireMenus } = storeToRefs(mainStore)
 
 function handleElTreeCheck(data1: any, data2: any) {
   const menuList = [...data2.checkedKeys, ...data2.halfCheckedKeys]
