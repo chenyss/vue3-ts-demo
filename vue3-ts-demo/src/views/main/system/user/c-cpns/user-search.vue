@@ -25,14 +25,14 @@
         ></el-col>
         <el-col :span="8"
           ><el-form-item label="创建时间" prop="createAt">
-            <el-time-picker
+            <el-date-picker
               v-model="searchForm.createAt"
-              is-range
+              type="daterange"
               range-separator="-"
               start-placeholder="开始时间"
               end-placeholder="结束时间"
             >
-            </el-time-picker> </el-form-item
+            </el-date-picker> </el-form-item
         ></el-col>
       </el-row>
     </el-form>

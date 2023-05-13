@@ -33,8 +33,15 @@
               </template>
             </el-table-column>
           </template>
-          <template v-else>
+          <template v-else-if="item.type === 'selection' || item.type === 'index'">
             <el-table-column align="center" v-bind="item" />
+          </template>
+          <template v-else>
+            <el-table-column align="center" v-bind="item">
+              <template #default="scope">
+                {{ item.formatFun ? item.formatFun(scope.row[item.prop], item.prop) : scope.row[item.prop] }}
+              </template>
+            </el-table-column>
           </template>
         </template>
       </el-table>

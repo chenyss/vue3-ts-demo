@@ -2,7 +2,7 @@ import type PageModal from '@/components/page-modal/index.vue'
 import { ref } from 'vue'
 type EditFnType = (data: any) => void
 
-function usePageModal(editCallback: EditFnType) {
+function usePageModal(editCallback?: EditFnType) {
   const modalRef = ref<InstanceType<typeof PageModal>>()
   function handleNewItem() {
     modalRef.value!.isNew = true
