@@ -81,4 +81,29 @@ function mapMenuListToIds(menuList: any[]) {
   return ids
 }
 
-export { loadLocalRoutes, mapMenusToRoutes, mapPathToMenu, mapPathToBreadcrumbs, mainRedirectPath, mapMenuListToIds }
+function mapMenusToPermissions(menuList: any[]) {
+  const permissions: string[] = []
+
+  function recurseGetPermission(menus: any[]) {
+    for (const item of menus) {
+      if (item.type === 3) {
+        permissions.push(item.permission)
+      } else {
+        recurseGetPermission(item.children ?? [])
+      }
+    }
+  }
+  recurseGetPermission(menuList)
+
+  return permissions
+}
+
+export {
+  loadLocalRoutes,
+  mapMenusToRoutes,
+  mapPathToMenu,
+  mapPathToBreadcrumbs,
+  mainRedirectPath,
+  mapMenuListToIds,
+  mapMenusToPermissions
+}
