@@ -2,7 +2,7 @@
   <div class="content">
     <div class="header">
       <h3 class="title">{{ contentConfig.header.title }}</h3>
-      <el-button type="primary" @click="handleNewItem">{{ contentConfig.header.btnTitle }}</el-button>
+      <el-button type="primary" @click="handleNewItem" v-if="isCreate">{{ contentConfig.header.btnTitle }}</el-button>
     </div>
     <div class="table">
       <el-table :data="pageList" border style="width: 100%">
@@ -17,10 +17,24 @@
           <template v-else-if="item.type === 'handler'">
             <el-table-column align="center" v-bind="item">
               <template #default="scope">
-                <el-button size="small" icon="Edit" type="primary" text @click="handelEditItem(scope.row)">
+                <el-button
+                  size="small"
+                  icon="Edit"
+                  type="primary"
+                  text
+                  @click="handelEditItem(scope.row)"
+                  v-if="isUpdate"
+                >
                   编辑
                 </el-button>
-                <el-button size="small" icon="Delete" type="danger" text @click="handelDeleteItem(scope.row.id)">
+                <el-button
+                  size="small"
+                  icon="Delete"
+                  type="danger"
+                  text
+                  @click="handelDeleteItem(scope.row.id)"
+                  v-if="isDelete"
+                >
                   删除
                 </el-button>
               </template>
@@ -63,6 +77,7 @@
 </template>
 
 <script setup lang="ts">
+import usePermissions from '@/hooks/usePermissions'
 import useSystemStore from '@/store/main/system'
 import { formatUTC } from '@/utils/format'
 import { storeToRefs } from 'pinia'
@@ -75,7 +90,13 @@ interface IProps {
     propsList: any[]
   }
 }
+
 const props = defineProps<IProps>()
+
+const isCreate = usePermissions(`${props.contentConfig.pageName}:create`)
+const isDelete = usePermissions(`${props.contentConfig.pageName}:delete`)
+const isUpdate = usePermissions(`${props.contentConfig.pageName}:update`)
+const isQuery = usePermissions(`${props.contentConfig.pageName}:query`)
 
 const pageIndex = ref(1)
 const pageSize = ref(10)
@@ -86,6 +107,8 @@ const { pageList, pageTotalCount } = storeToRefs(systemStore)
 const emit = defineEmits(['newItem', 'editItem'])
 
 function fetchPageListData(formData: any = {}) {
+  if (!isQuery) return
+
   const size = pageSize.value
   const offset = (pageIndex.value - 1) * size
   const pageInfo = { size, offset }

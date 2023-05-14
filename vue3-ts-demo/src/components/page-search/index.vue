@@ -1,7 +1,13 @@
 <template>
   <div class="search">
     <!-- 1.输入搜索关键字的表单 -->
-    <el-form :model="searchForm" ref="formRef" :label-width="searchConfig.labelWidth ?? '80px'" size="large">
+    <el-form
+      :model="searchForm"
+      ref="formRef"
+      :label-width="searchConfig.labelWidth ?? '80px'"
+      size="large"
+      v-if="isQuery"
+    >
       <el-row :gutter="20">
         <template v-for="(item, index) in searchConfig.formItems" :key="index">
           <template v-if="item.type === 'input'">
@@ -45,12 +51,14 @@
 </template>
 
 <script setup lang="ts">
+import usePermissions from '@/hooks/usePermissions'
 import type { ElForm } from 'element-plus'
 import { reactive, ref } from 'vue'
 
 // 定义自定义事件/接收的属性
 interface IProps {
   searchConfig: {
+    pageName: string
     labelWidth?: string
     formItems: any[]
   }
@@ -66,6 +74,9 @@ const searchForm = reactive(initialForm)
 
 // 重置操作
 const formRef = ref<InstanceType<typeof ElForm>>()
+
+const isQuery = usePermissions(`${props.searchConfig.pageName}:query`)
+
 function handleResetClick() {
   formRef.value?.resetFields()
   emit('resetClick')

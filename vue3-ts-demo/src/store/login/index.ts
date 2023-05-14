@@ -47,6 +47,7 @@ const useLogin = defineStore('login', {
       localCache.setCache(USERINFO, userMenuInfo.data)
       localCache.setCache(USERMENU, userMenuInfo.data)
 
+      //5.获取用户页面权限信息
       const permissions = mapMenusToPermissions(userMenuInfo.data)
       this.permissions = permissions
 
@@ -57,7 +58,7 @@ const useLogin = defineStore('login', {
     },
 
     loadLocalCacheAction() {
-      // 1.加载默认数据
+      // 加载默认数据
       const token = localCache.getCache(LOGIN_TOKEN)
       const userInfo = localCache.getCache(USERINFO)
       const userMenuInfo = localCache.getCache(USERMENU)
@@ -65,9 +66,12 @@ const useLogin = defineStore('login', {
         this.token = token
         this.userInfo = userInfo
         this.userMenuInfo = userMenuInfo
-        // 2.动态添加路由
+        // 动态添加路由
         const routes = mapMenusToRoutes(userMenuInfo)
 
+        //获取页面权限
+        const permissions = mapMenusToPermissions(userMenuInfo)
+        this.permissions = permissions
         routes.forEach((route) => router.addRoute('main', route))
 
         const mainStore = useMainStore()
