@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import { CountUp } from 'countup.js'
-import { onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 interface IProps {
   amount?: string
   title?: string
@@ -28,17 +28,40 @@ interface IProps {
   subtitle?: string
 }
 const props = defineProps<IProps>()
-
+let addNumber1 = ref(props.number1)
+let addNumber2 = ref(props.number2)
+let timer: any = null
 const count1Ref = ref<HTMLElement>()
 const count2Ref = ref<HTMLElement>()
-const countOption = {
+let countOption = {
   prefix: props.amount === 'saleroom' ? '¥' : ''
 }
+
 onMounted(() => {
   const countup1 = new CountUp(count1Ref.value!, props.number1, countOption)
   const countup2 = new CountUp(count2Ref.value!, props.number2, countOption)
   countup1.start()
   countup2.start()
+  let timer = null
+  //每5s刷新数据
+  timer = setInterval(() => {
+    const startVal1 = addNumber1.value
+    const startVal2 = addNumber2.value
+    const countup1 = new CountUp(count1Ref.value!, (addNumber1.value += 99999), {
+      prefix: props.amount === 'saleroom' ? '¥' : '',
+      startVal: startVal1
+    })
+    const countup2 = new CountUp(count2Ref.value!, (addNumber2.value += 99999), {
+      prefix: props.amount === 'saleroom' ? '¥' : '',
+      startVal: startVal2
+    })
+    countup1.start()
+    countup2.start()
+  }, 4000)
+})
+onBeforeUnmount(() => {
+  clearInterval(timer)
+  timer = null
 })
 </script>
 
