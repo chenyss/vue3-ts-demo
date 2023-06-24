@@ -13,7 +13,7 @@
           <template v-if="item.type === 'input'">
             <el-col :span="8">
               <el-form-item :label="item.label" :prop="item.prop">
-                <el-input v-model="searchForm[item.prop]" :placeholder="item.placeholder"></el-input
+                <el-input v-model="searchForm[item.prop]" :placeholder="item.placeholder" clearable></el-input
               ></el-form-item>
             </el-col>
           </template>
@@ -32,11 +32,15 @@
             </el-col>
           </template>
           <template v-else-if="item.type === 'select'">
-            <el-select v-model="searchForm[item.prop]" :placeholder="item.placeholder" style="width: 100%">
-              <template v-for="option in item.options" :key="option.value">
-                <el-option :label="option.label" :value="option.value" />
-              </template>
-            </el-select>
+            <el-col :span="8">
+              <el-form-item :label="item.label" :prop="item.prop">
+                <el-select v-model="searchForm[item.prop]" :placeholder="item.placeholder" style="width: 100%">
+                  <template v-for="option in item.options" :key="option.value">
+                    <el-option :label="option.label" :value="option.value" />
+                  </template>
+                </el-select>
+              </el-form-item>
+            </el-col>
           </template>
         </template>
       </el-row>

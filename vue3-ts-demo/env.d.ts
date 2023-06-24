@@ -7,3 +7,4 @@ declare module '*.vue' {
 }
 
 declare module '*.mjs'
+declare module '@wangeditor/editor-for-vue'

@@ -50,10 +50,27 @@
           <template v-else-if="item.type === 'selection' || item.type === 'index'">
             <el-table-column align="center" v-bind="item" />
           </template>
+          <template v-else-if="item.type === 'img'">
+            <el-table-column align="center" v-bind="item">
+              <template #default="scope">
+                <img :src="scope.row[item.prop]" style="width: 100%" />
+              </template>
+            </el-table-column>
+          </template>
           <template v-else>
             <el-table-column align="center" v-bind="item">
               <template #default="scope">
-                {{ item.formatFun ? item.formatFun(scope.row[item.prop], item.prop) : scope.row[item.prop] }}
+                <el-tooltip
+                  class="box-item"
+                  effect="dark"
+                  :content="scope.row[item.prop]"
+                  placement="top"
+                  :disabled="!item.showDetail"
+                >
+                  <div :style="item.style ? item.style : ''">
+                    {{ item.formatFun ? item.formatFun(scope.row[item.prop], item.prop) : scope.row[item.prop] }}
+                  </div>
+                </el-tooltip>
               </template>
             </el-table-column>
           </template>

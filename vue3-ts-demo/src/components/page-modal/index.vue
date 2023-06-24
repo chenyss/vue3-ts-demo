@@ -6,7 +6,7 @@
           <template v-for="(item, index) in modalConfig.formItems" :key="index">
             <el-form-item :label="item.label" :prop="item.prop">
               <template v-if="item.type === 'input'">
-                <el-input v-model="formData[item.prop]" :placeholder="item.placeholder" />
+                <el-input v-model="formData[item.prop]" :placeholder="item.placeholder" clearable />
               </template>
               <template v-if="item.type === 'date-picker'">
                 <el-date-picker
