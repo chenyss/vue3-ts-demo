@@ -49,7 +49,7 @@ const router = useRouter()
 const route = useRoute()
 const userMenuInfo = loginStore.userMenuInfo
 const id = computed(() => {
-  return mapPathToMenu(route.path, userMenuInfo).id + ''
+  return mapPathToMenu(route.path, userMenuInfo)?.id + ''
 })
 function hadleLinkClick(item: any) {
   router.push(item.url)

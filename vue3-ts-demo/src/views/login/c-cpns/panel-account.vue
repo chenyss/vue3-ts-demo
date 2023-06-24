@@ -20,8 +20,8 @@ import { ElMessage } from 'element-plus'
 import { reactive, ref } from 'vue'
 
 const account = reactive({
-  name: localCache.getCache('name') ?? '',
-  password: localCache.getCache('password') ?? ''
+  name: localCache.getCache(LOGIN_NAME) ?? '',
+  password: localCache.getCache(LOGIN_PASSWORD) ?? ''
 })
 
 const accountRules: FormRules = {
