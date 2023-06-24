@@ -1,12 +1,12 @@
 <template>
-  <div class="list">
-    <h2>list</h2>
+  <div class="role">
+    <PageContent :content-config="contentConfig" />
   </div>
 </template>
 
-<script setup lang="ts" name="list"></script>
+<script setup lang="ts">
+import PageContent from '@/components/page-content/index.vue'
+import contentConfig from './config/content.config'
+</script>
 
-<style scoped>
-.list {
-}
-</style>
+<style lang="less" scoped></style>
