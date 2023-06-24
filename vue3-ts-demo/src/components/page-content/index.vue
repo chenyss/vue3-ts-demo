@@ -5,7 +5,13 @@
       <el-button type="primary" @click="handleNewItem" v-if="isCreate">{{ contentConfig.header.btnTitle }}</el-button>
     </div>
     <div class="table">
-      <el-table :data="pageList" border style="width: 100%">
+      <el-table
+        :data="pageList"
+        border
+        style="width: 100%"
+        row-key="id"
+        :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+      >
         <template v-for="(item, index) in contentConfig.propsList" :key="index">
           <template v-if="item.type === 'timer'">
             <el-table-column align="center" v-bind="item">
@@ -63,7 +69,7 @@
                 <el-tooltip
                   class="box-item"
                   effect="dark"
-                  :content="scope.row[item.prop]"
+                  :content="`${scope.row[item.prop]}`"
                   placement="top"
                   :disabled="!item.showDetail"
                 >
@@ -117,6 +123,7 @@ const isQuery = usePermissions(`${props.contentConfig.pageName}:query`)
 
 const pageIndex = ref(1)
 const pageSize = ref(10)
+
 const systemStore = useSystemStore()
 fetchPageListData()
 const { pageList, pageTotalCount } = storeToRefs(systemStore)

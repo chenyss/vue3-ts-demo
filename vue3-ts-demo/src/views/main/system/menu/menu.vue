@@ -1,12 +1,12 @@
 <template>
-  <div class="menu">
-    <h2>menu</h2>
+  <div class="role">
+    <PageContent :content-config="contentConfig" />
   </div>
 </template>
 
-<script setup lang="ts" name="menu"></script>
+<script setup lang="ts">
+import PageContent from '@/components/page-content/index.vue'
+import contentConfig from './config/content.config'
+</script>
 
-<style scoped>
-.menu {
-}
-</style>
+<style lang="less" scoped></style>

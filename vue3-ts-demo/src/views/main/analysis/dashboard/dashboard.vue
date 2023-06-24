@@ -68,13 +68,6 @@ const showGoodsCategoryFavor = computed(() => {
   return { labels, values }
 })
 const showGoodsAddressSale = computed(() => {
-  console.log(
-    goodsAddressSale.value.map((item) => ({
-      name: item.address,
-      value: item.count
-    }))
-  )
-
   return goodsAddressSale.value.map((item) => ({
     name: item.address,
     value: item.count
