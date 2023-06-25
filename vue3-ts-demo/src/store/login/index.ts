@@ -53,7 +53,8 @@ const useLogin = defineStore('login', {
 
       const mainStore = useMainStore()
       mainStore.fetchEntireDataAction()
-
+      //6.动态获取路由
+      this.loadLocalCacheAction()
       router.push('/main')
     },
 
@@ -62,6 +63,7 @@ const useLogin = defineStore('login', {
       const token = localCache.getCache(LOGIN_TOKEN)
       const userInfo = localCache.getCache(USERINFO)
       const userMenuInfo = localCache.getCache(USERMENU)
+
       if (token && userInfo && userMenuInfo) {
         this.token = token
         this.userInfo = userInfo
