@@ -24,11 +24,15 @@ onMounted(() => {
   watchEffect(() => {
     myChart.setOption(props.option)
   })
+  window.addEventListener('resize', () => {
+    myChart.resize()
+  })
 })
 </script>
 
 <style lang="less" scoped>
 .chart-content {
   height: 300px;
+  width: 100%;
 }
 </style>

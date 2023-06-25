@@ -21,7 +21,7 @@
   </el-card>
 </template>
 
-<style>
+<style lang="less" scoped>
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -36,9 +36,6 @@
   margin-bottom: 18px;
 }
 
-.box-card {
-  width: 480px;
-}
 li {
   margin-bottom: 5px;
 }
