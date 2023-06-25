@@ -24,6 +24,7 @@ function handleResetClick() {
 function handleNewUser() {
   modalRef.value!.isNew = true
   modalRef.value!.dialogVisible = true
+  modalRef.value?.setFormData()
 }
 
 function handleEditUser(itemData: any) {

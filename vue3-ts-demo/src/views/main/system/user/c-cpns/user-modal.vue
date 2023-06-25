@@ -63,7 +63,9 @@ const mainStore = useMainStore()
 const systemStore = useSystemStore()
 const { entireRoles, entireDepartments } = storeToRefs(mainStore)
 
-function setFormData(itemData: any) {
+function setFormData(itemData: any = false) {
+  console.log(isNew.value, itemData)
+
   if (!isNew.value && itemData) {
     // 编辑数据
     for (const key in formData) {

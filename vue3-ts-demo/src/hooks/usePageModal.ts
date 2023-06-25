@@ -7,6 +7,7 @@ function usePageModal(editCallback?: callBcakFnType, newCallback?: callBcakFnTyp
   function handleNewItem() {
     modalRef.value!.isNew = true
     modalRef.value!.dialogVisible = true
+    modalRef.value?.setFormData()
     if (newCallback) {
       newCallback()
     }
